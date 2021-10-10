@@ -23,12 +23,12 @@ workflow run_quilt {
 
     output {
         File zipped_output = Imputation.zipped_output
-	}
+    }
 
     meta {
-	    author : "Brian Sharber"
-	    email : "brian.sharber@vumc.org"
-	    description : "This WDL workflow runs QUILT - https://github.com/rwdavies/QUILT#paragraph-installation"
+	author : "Brian Sharber"
+	email : "brian.sharber@vumc.org"
+	description : "This WDL workflow runs QUILT - https://github.com/rwdavies/QUILT#paragraph-installation"
     }
 }
 
@@ -117,7 +117,6 @@ task Imputation {
     command <<<
         set -euo pipefail
         cp -r /usr/local/bin/QUILT/* .
-        ls
 
         ./QUILT.R     \
         ~{if defined(outputdir) then "--outputdir=~{outputdir} " else " "} \
@@ -189,16 +188,16 @@ task Imputation {
         ~{if help then "--help " else " "}
 
         zip -r ~{output_zipped_name} ~{outputdir}
-	    >>>
+	>>>
 
     runtime {
-		docker: docker
-		memory: memory + " GiB"
-		disks: "local-disk " + disk + " HDD"
+	docker: docker
+	memory: memory + " GiB"
+	disks: "local-disk " + disk + " HDD"
         cpu: cpu
-		preemptible: preemptible
+	preemptible: preemptible
         maxRetries: maxRetries
-	}
+    }
 
     output {
         File zipped_output = "${output_zipped_name}"
